@@ -1,6 +1,7 @@
 from bookshelf.models import Book
 
-book = Book.objects.get(title="Nineteen Eighty-Four")
-book.delete()
+book = Book.objects.get(title="1984")
+book.title = "Nineteen Eighty-Four"
+book.save()
 
-# Output: Book deleted successfully
+# Output: Book title updated successfully
