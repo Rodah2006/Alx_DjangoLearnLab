@@ -1,11 +1,11 @@
 from bookshelf.models import Book
 
-book = Book.objects.get(title="Promised Truce")
+book = Book.objects.get(title="1984")
 print(book.title)
 print(book.author)
 print(book.publication_year)
 
 # Output:
-# Promised Truce
-# Rodah
-# 2013
+# 1984
+# George Orwell
+# 1949

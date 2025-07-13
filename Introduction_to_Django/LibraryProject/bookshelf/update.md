@@ -1,10 +1,6 @@
 from bookshelf.models import Book
 
-book = Book.objects.get(title="Promised Truce")
-book.title = "The Promised Truce"
-book.save()
+book = Book.objects.get(title="Nineteen Eighty-Four")
+book.delete()
 
-print(book.title)
-
-# Output:
-# The Promised Truce
+# Output: Book deleted successfully
