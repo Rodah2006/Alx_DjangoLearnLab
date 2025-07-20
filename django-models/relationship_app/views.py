@@ -1,20 +1,21 @@
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import DetailView
-from .models import Book, Library
+# LibraryProject/relationship_app/views.py
 
-# Function-Based View to list all books
-def list_books(request):
-    books = Book.objects.all()
-    return render(request, 'list_books.html', {'books': books})
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 
-# Class-Based View to show library detail and books in it
-class LibraryDetailView(DetailView):
-    model = Library
-    template_name = 'library_detail.html'
-    context_object_name = 'library'
+def register_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')  # or any page you'd like after login
+    else:
+        form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
 
-    # Optionally, override get_context_data if you want to add extra context
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['books'] = self.object.books.all()
-    #     return context
+def logout_view(request):
+    logout(request)
+    return redirect('login')
