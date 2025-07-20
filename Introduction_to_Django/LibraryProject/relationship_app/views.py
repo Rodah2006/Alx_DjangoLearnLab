@@ -19,22 +19,6 @@ class LibraryDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['books'] = self.object.book_set.all()
         return context
-def register_view(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('list_books')  # You can redirect to any page
-    else:
-        form = UserCreationForm()
-    return render(request, 'relationship_app/register.html', {'form': form})
-
-
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
             user = form.get_user()
             login(request, user)
             return redirect('list_books')
@@ -47,3 +31,14 @@ def logout_view(request):
     if request.method == 'POST':
         logout(request)
         return redirect('login')  # Redirect to login after logout
+
+def register_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Automatically log in the new user
+            return redirect('list_books')  # Redirect to books page or home
+    else:
+        form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
