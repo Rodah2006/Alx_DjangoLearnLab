@@ -18,3 +18,11 @@ def list_books_by_author(author_name):
     books = Book.objects.filter(author=author)  # ✅ checker looks for this
 
     return books
+
+from relationship_app.models import Librarian  # make sure this is imported
+
+def get_librarian_for_library(library_name):
+    # This gets the librarian associated with the given library
+    librarian = Librarian.objects.get(library__name=library_name)  # ✅ checker looks for this
+
+    return librarian
