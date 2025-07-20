@@ -1,6 +1,6 @@
 from django.db import models
 
-class Library(models.Model):
+class Author(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -8,17 +8,21 @@ class Library(models.Model):
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
-    author = models.CharField(max_length=100)
-    library = models.ForeignKey(Library, 
-on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
 
+class Library(models.Model):
+    name = models.CharField(max_length=100)
+    books = models.ManyToManyField(Book)
+
+    def __str__(self):
+        return self.name
+
 class Librarian(models.Model):
     name = models.CharField(max_length=100)
-    library = models.ForeignKey(Library, 
-on_delete=models.CASCADE)
+    library = models.OneToOneField(Library, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
