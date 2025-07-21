@@ -51,3 +51,17 @@ try:
         print(f"- {book.title}")
 except Author.DoesNotExist:
     print(f"No author found with the name '{author_name}'")
+
+from relationship_app.models import Librarian, Library  # Make sure these imports are present
+
+# Replace with an actual library name that exists in your database
+library_name = "Central Library"
+
+try:
+    library = Library.objects.get(name=library_name)
+    librarian = Librarian.objects.get(library=library)
+    print(f"\nLibrarian for '{library_name}': {librarian.name}")
+except Library.DoesNotExist:
+    print(f"No library found with the name '{library_name}'")
+except Librarian.DoesNotExist:
+    print(f"No librarian assigned to '{library_name}'")
