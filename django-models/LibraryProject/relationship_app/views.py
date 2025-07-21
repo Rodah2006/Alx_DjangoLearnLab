@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DetailView
-from .models import,Book  Library  # ✅ Required by checker
+from .models import Library, Book  # ✅ Required by checker
 
 # View to register a user
 def register_view(request):
