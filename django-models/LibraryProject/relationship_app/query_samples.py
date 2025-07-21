@@ -37,3 +37,17 @@ try:
         print(f"- {book.title} by {book.author}")
 except Library.DoesNotExist:
     print(f"No library found with the name '{library_name}'")
+
+from relationship_app.models import Author, Book  # Ensure these imports are present
+
+# Replace with an actual author name in your database
+author_name = "John Doe"
+
+try:
+    author = Author.objects.get(name=author_name)
+    books_by_author = Book.objects.filter(author=author)
+    print(f"\nBooks by '{author_name}':")
+    for book in books_by_author:
+        print(f"- {book.title}")
+except Author.DoesNotExist:
+    print(f"No author found with the name '{author_name}'")
