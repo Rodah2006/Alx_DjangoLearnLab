@@ -23,3 +23,17 @@ students = Student.objects.all()
 print("All students:")
 for s in students:
     print(s.name, s.age, s.email)
+
+from relationship_app.models import Library  # Make sure this is already imported
+
+# Replace "Central Library" with any existing library name in your database
+library_name = "Central Library"
+
+try:
+    library = Library.objects.get(name=library_name)
+    books = library.books.all()
+    print(f"\nBooks in '{library_name}':")
+    for book in books:
+        print(f"- {book.title} by {book.author}")
+except Library.DoesNotExist:
+    print(f"No library found with the name '{library_name}'")
