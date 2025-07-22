@@ -19,3 +19,18 @@ def register_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def admin_page(request):
+    return render(request, 'relationship_app/admin_page.html')
+
+@login_required
+def librarian_page(request):
+    return render(request, 'relationship_app/librarian_page.html')
+
+@login_required
+def member_page(request):
+    return render(request, 'relationship_app/member_page.html')
