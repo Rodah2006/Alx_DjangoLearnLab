@@ -21,13 +21,13 @@ def logout_view(request):
     return redirect('login')
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
 from .decorators import role_required
+from django.shortcuts import render
 
 @login_required
-@role_required('Admin')  # Only users with role == 'Admin' allowed
-def admin_view(request):
-    return render(request, 'relationship_app/admin.html')
+@role_required('Admin')
+def admin_page(request):
+    return render(request, 'relationship_app/admin_page.html')
 
 @login_required
 def librarian_page(request):
