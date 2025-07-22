@@ -45,3 +45,27 @@ class BookDetailView(DetailView):
 def list_books(request):
     books = Book.objects.all()
     return render(request, 'relationship_app/book_list.html', {'books': books})
+
+from django.contrib.auth.decorators import login_required
+from .models import UserProfile
+
+@login_required
+def admin_view(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    if user_profile.role == 'Admin':
+        return render(request, 'relationship_app/admin.html')
+    return redirect('login')
+
+@login_required
+def librarian_view(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    if user_profile.role == 'Librarian':
+        return render(request, 'relationship_app/librarian.html')
+    return redirect('login')
+
+@login_required
+def member_view(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    if user_profile.role == 'Member':
+        return render(request, 'relationship_app/member.html')
+    return redirect('login')
