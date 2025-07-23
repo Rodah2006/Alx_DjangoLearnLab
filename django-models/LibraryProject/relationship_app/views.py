@@ -69,3 +69,4 @@ def member_view(request):
     if user_profile.role == 'Member':
         return render(request, 'relationship_app/member.html')
     return redirect('login')
+# TEMP: Test edit to views.py
