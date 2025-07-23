@@ -49,12 +49,12 @@ def list_books(request):
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
 
+from .decorators import role_required
+
 @login_required
+@role_required('Admin')  # Only Admins allowed
 def admin_view(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-    if user_profile.role == 'Admin':
-        return render(request, 'relationship_app/admin.html')
-    return redirect('login')
+    return render(request, 'relationship_app/admin.html')
 
 @login_required
 def librarian_view(request):
