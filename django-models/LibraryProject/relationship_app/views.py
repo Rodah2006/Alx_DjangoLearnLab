@@ -3,70 +3,69 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.generic.detail import DetailView
-from .models import Library, Book
+from .models import Library, Book, UserProfile  # Include UserProfile
+from django.http import HttpResponseForbidden
 
-# View to register a user
+# ------------------- Auth Views -------------------
+
 def register_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            # Optionally: Assign default role in UserProfile if needed
             login(request, user)
-            return redirect('list_books')  # Redirect to book list after register
+            return redirect('list_books')
     else:
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
 
-# View to log in a user
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('list_books')  # Redirect to book list after login
+            return redirect('list_books')
     else:
         form = AuthenticationForm()
     return render(request, 'relationship_app/login.html', {'form': form})
 
-# View to log out a user
 def logout_view(request):
     logout(request)
-    return redirect('login')  # Redirect to login page after logout
+    return redirect('login')
 
-# Class-based view for viewing a book detail (CBV required by checker)
+# ------------------- Book Views -------------------
+
 class BookDetailView(DetailView):
     model = Book
     template_name = 'relationship_app/book_detail.html'
     context_object_name = 'book'
 
-# Function-based view to list all books (used after login/registration)
 @login_required
 def list_books(request):
     books = Book.objects.all()
     return render(request, 'relationship_app/book_list.html', {'books': books})
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+# ------------------- Role-Based Views -------------------
 
 @login_required
 def admin_view(request):
-    if request.user.is_superuser:  # Use built-in Django check
+    user_profile = UserProfile.objects.get(user=request.user)
+    if user_profile.role == 'Admin':
         return render(request, 'relationship_app/admin.html')
-    else:
-        return redirect('login')  # or return HttpResponseForbidden()
+    return HttpResponseForbidden("You are not authorized to access this page.")
 
 @login_required
 def librarian_view(request):
     user_profile = UserProfile.objects.get(user=request.user)
     if user_profile.role == 'Librarian':
         return render(request, 'relationship_app/librarian.html')
-    return redirect('login')
+    return HttpResponseForbidden("You are not authorized to access this page.")
 
 @login_required
 def member_view(request):
     user_profile = UserProfile.objects.get(user=request.user)
     if user_profile.role == 'Member':
         return render(request, 'relationship_app/member.html')
-    return redirect('login')
-# TEMP: Test edit to views.py
+    return HttpResponseForbidden("You are not authorized to access this page.")
