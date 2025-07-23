@@ -35,16 +35,19 @@ class Student(models.Model):
     def __str__(self):
         return self.name
 
+# models.py
 
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.db import models
 
-class CustomUser(AbstractUser):
-    ROLE_CHOICES = (
+class UserProfile(models.Model):
+    ROLE_CHOICES = [
         ('Admin', 'Admin'),
-        ('User', 'User'),
-    )
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='User')
+        ('Librarian', 'Librarian'),
+        ('Member', 'Member'),
+    ]
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
 
     def __str__(self):
-        return self.username
+        return f"{self.user.username} - {self.role}"
