@@ -35,34 +35,16 @@ class Student(models.Model):
     def __str__(self):
         return self.name
 
-from django.db import models
-from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-
-# Role choices
-ROLE_CHOICES = [
-    ('Admin', 'Admin'),
-    ('Librarian', 'Librarian'),
-    ('Member', 'Member'),
-]
-
-# UserProfile model with role
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.role}"
-
-# Automatically create a UserProfile when a User is created
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        UserProfile.objects.create(user=instance)
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class CustomUser(AbstractUser):
-    role = models.CharField(max_length=20, default='User')
+    ROLE_CHOICES = (
+        ('Admin', 'Admin'),
+        ('User', 'User'),
+    )
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='User')
+
+    def __str__(self):
+        return self.username

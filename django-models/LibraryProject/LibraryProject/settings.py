@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'relationship_app',
 ]
 
+AUTH_USER_MODEL = 'relationship_app.CustomUser'
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -125,4 +128,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'list_books'
 LOGOUT_REDIRECT_URL = 'login'
 
-AUTH_USER_MODEL = 'relationship_app.CustomUser'
