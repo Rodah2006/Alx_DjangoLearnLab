@@ -1,6 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from . import views
+from .views import admin_view  # 👈 Import your admin view
 
 urlpatterns = [
     path('register/', views.register_view, name='register'),
@@ -9,5 +10,8 @@ urlpatterns = [
 
     # Book-related views
     path('books/', views.list_books, name='list_books'),
-    path('books/<int:pk>/', views.book_detail_view, name='book_detail'),  # Make sure you have a view for this
+    path('books/<int:pk>/', views.book_detail_view, name='book_detail'),
+
+    # ✅ Admin view route
+    path('admin-dashboard/', admin_view, name='admin_dashboard'),
 ]

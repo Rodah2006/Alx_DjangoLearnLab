@@ -47,14 +47,14 @@ def list_books(request):
     return render(request, 'relationship_app/book_list.html', {'books': books})
 
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile
-
-from .decorators import role_required
+from django.shortcuts import render, redirect
 
 @login_required
-@role_required('Admin')  # Only Admins allowed
 def admin_view(request):
-    return render(request, 'relationship_app/admin.html')
+    if request.user.is_superuser:  # Use built-in Django check
+        return render(request, 'relationship_app/admin.html')
+    else:
+        return redirect('login')  # or return HttpResponseForbidden()
 
 @login_required
 def librarian_view(request):
