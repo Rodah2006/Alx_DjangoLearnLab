@@ -1,71 +1,52 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, logout
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.views.generic.detail import DetailView
-from .models import Library, Book, UserProfile  # Include UserProfile
 from django.http import HttpResponseForbidden
+from .models import UserProfile, Library, Book  # ✅ Include your models here
 
-# ------------------- Auth Views -------------------
 
-def register_view(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            # Optionally: Assign default role in UserProfile if needed
-            login(request, user)
-            return redirect('list_books')
-    else:
-        form = UserCreationForm()
-    return render(request, 'relationship_app/register.html', {'form': form})
-
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('list_books')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'relationship_app/login.html', {'form': form})
-
-def logout_view(request):
-    logout(request)
-    return redirect('login')
-
-# ------------------- Book Views -------------------
-
-class BookDetailView(DetailView):
-    model = Book
-    template_name = 'relationship_app/book_detail.html'
-    context_object_name = 'book'
-
+# 🌐 Home page for all logged-in users
 @login_required
-def list_books(request):
-    books = Book.objects.all()
-    return render(request, 'relationship_app/book_list.html', {'books': books})
+def home(request):
+    return render(request, 'relationship_app/home.html')
 
-# ------------------- Role-Based Views -------------------
 
+# 🔐 Admin view — only accessible if role is Admin
 @login_required
 def admin_view(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-    if user_profile.role == 'Admin':
-        return render(request, 'relationship_app/admin.html')
-    return HttpResponseForbidden("You are not authorized to access this page.")
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        if user_profile.role == 'Admin':
+            libraries = Library.objects.all()  # Example: display all libraries
+            return render(request, 'relationship_app/admin.html', {'libraries': libraries})
+        else:
+            return HttpResponseForbidden("You are not authorized to access this page.")
+    except UserProfile.DoesNotExist:
+        return HttpResponseForbidden("User profile not found.")
 
+
+# 📚 Librarian view — only accessible if role is Librarian
 @login_required
 def librarian_view(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-    if user_profile.role == 'Librarian':
-        return render(request, 'relationship_app/librarian.html')
-    return HttpResponseForbidden("You are not authorized to access this page.")
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        if user_profile.role == 'Librarian':
+            books = Book.objects.all()  # Example: display all books
+            return render(request, 'relationship_app/librarian.html', {'books': books})
+        else:
+            return HttpResponseForbidden("You are not authorized to access this page.")
+    except UserProfile.DoesNotExist:
+        return HttpResponseForbidden("User profile not found.")
 
+
+# 🙋 Member view — only accessible if role is Member
 @login_required
 def member_view(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-    if user_profile.role == 'Member':
-        return render(request, 'relationship_app/member.html')
-    return HttpResponseForbidden("You are not authorized to access this page.")
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        if user_profile.role == 'Member':
+            books = Book.objects.all()  # You can customize what members can see
+            return render(request, 'relationship_app/member.html', {'books': books})
+        else:
+            return HttpResponseForbidden("You are not authorized to access this page.")
+    except UserProfile.DoesNotExist:
+        return HttpResponseForbidden("User profile not found.")
