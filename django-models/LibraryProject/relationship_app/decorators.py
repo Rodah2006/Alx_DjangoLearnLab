@@ -1,15 +1,11 @@
-from django.shortcuts import redirect
-from .models import UserProfile
+from django.core.exceptions import PermissionDenied
 
-def role_required(role):
+def role_required(required_role):
     def decorator(view_func):
-        def wrapper(request, *args, **kwargs):
-            try:
-                user_profile = UserProfile.objects.get(user=request.user)
-                if user_profile.role == role:
-                    return view_func(request, *args, **kwargs)
-            except UserProfile.DoesNotExist:
-                pass
-            return redirect('login')  # or show a permission denied page
-        return wrapper
+        def _wrapped_view(request, *args, **kwargs):
+            if request.user.is_authenticated and request.user.userprofile.role == required_role:
+                return view_func(request, *args, **kwargs)
+            else:
+                raise PermissionDenied
+        return _wrapped_view
     return decorator
