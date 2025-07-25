@@ -1,3 +1,14 @@
 from django.shortcuts import render
+from django.views.generic import DetailView
+from .models import Book, Library
 
-# Create your views here.
+# Function-Based View: List all books and their authors
+def list_books(request):
+    books = Book.objects.all()
+    return render(request, 'list_books.html', {'books': books})
+
+# Class-Based View: Show details for a specific library, including its books
+class LibraryDetailView(DetailView):
+    model = Library
+    template_name = 'library_detail.html'
+    context_object_name = 'library'
