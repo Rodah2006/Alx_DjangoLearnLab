@@ -42,24 +42,6 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return render(request, 'relationship_app/logout.html')
+    return render(request, 'relationship_adef is_librarian(user):
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
 
-# relationship_app/views.py
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from .decorators import role_required
-
-@login_required
-@role_required('Admin')
-def admin_view(request):
-    return render(request, 'relationship_app/admin_view.html')
-
-@login_required
-@role_required('Librarian')
-def librarian_view(request):
-    return render(request, 'relationship_app/librarian_view.html')
-
-@login_required
-@role_required('Member')
-def member_view(request):
-    return render(request, 'relationship_app/member_view.html')
