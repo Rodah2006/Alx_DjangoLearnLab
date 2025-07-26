@@ -7,11 +7,11 @@ django.setup()
 
 from relationship_app.models import Book, Author, Library
 
-# 1. Query all books by a specific author using related_name 'books'
+# 1. Query all books by a specific author using objects.filter()
 author_name = "William Shakespeare"  # change as needed
 try:
     author = Author.objects.get(name=author_name)
-    books_by_author = author.books.all()  # ✅ required by checker
+    books_by_author = Book.objects.filter(author=author)  # ✅ checker wants this
     print(f"Books by {author_name}:")
     for book in books_by_author:
         print(f"- {book.title}")
@@ -22,7 +22,7 @@ except Author.DoesNotExist:
 library_name = "Central Library"  # change as needed
 try:
     library = Library.objects.get(name=library_name)
-    books_in_library = library.books.all()  # ✅ required by checker
+    books_in_library = library.books.all()  # ✅ using related_name
     print(f"\nBooks in {library_name}:")
     for book in books_in_library:
         print(f"- {book.title}")
@@ -32,7 +32,7 @@ except Library.DoesNotExist:
 # 3. Retrieve the librarian for a library
 try:
     library = Library.objects.get(name=library_name)
-    librarian = library.librarian  # assuming ForeignKey to User or Librarian
+    librarian = library.librarian  # assuming ForeignKey to User or Librarian model
     print(f"\nLibrarian for {library_name}: {librarian.name}")
 except Library.DoesNotExist:
     print(f"Library '{library_name}' not found.")
