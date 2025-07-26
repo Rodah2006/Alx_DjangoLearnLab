@@ -1,40 +1,47 @@
 import os
 import django
 
-# Set up Django environment
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'LibraryProject.settings')
+#  Django environment
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django-models.settings')  
 django.setup()
 
-from relationship_app.models import Book, Author, Library, Librarian
+from relationship_app.models import Author, Book, Library, Librarian
 
-# 1. Query all books by a specific author using objects.filter()
-author_name = "William Shakespeare"
-try:
-    author = Author.objects.get(name=author_name)
-    books_by_author = Book.objects.filter(author=author)  # ✅ checker wants this
-    print(f"Books by {author_name}:")
-    for book in books_by_author:
-        print(f"- {book.title}")
-except Author.DoesNotExist:
-    print(f"Author '{author_name}' not found.")
+# list books by author:
+def get_books_by_author(author_name):
+    try:
+        author = Author.objects.get(name=author_name)
+        books = author.objects.filter(author=author)
+        print(f'Books by {author_name}:')
+        for book in books:
+            print(f'- {book.title}')
+    except Author.DoesNotExist:
+        print(f'Author {author_name} does not exist.')
 
-# 2. List all books in a library using related_name 'books'
-library_name = "Central Library"
-try:
-    library = Library.objects.get(name=library_name)
-    books_in_library = library.books.all()  # ✅ related_name
-    print(f"\nBooks in {library_name}:")
-    for book in books_in_library:
-        print(f"- {book.title}")
-except Library.DoesNotExist:
-    print(f"Library '{library_name}' not found.")
+# List of all the books:
+def get_books_in_library(library_name):
+    try:
+        library = Library.objects.get(name=library_name)
+        books = library.books.all()
+        print(f'Books in {library_name}:')
+        for book in books:
+            print(f'- {book.title}')
+    except Library.DoesNotExist:
+        print(f'Library {library_name} does not exist.')
 
-# 3. Retrieve the librarian for a library using Librarian.objects.get(library=...)
-try:
-    library = Library.objects.get(name=library_name)
-    librarian = Librarian.objects.get(library=library)  # ✅ matches checker
-    print(f"\nLibrarian for {library_name}: {librarian.user.username}")
-except Library.DoesNotExist:
-    print(f"Library '{library_name}' not found.")
-except Librarian.DoesNotExist:
-    print(f"{library_name} has no assigned librarian.")
+# Retrieve operation:
+def get_librarian_for_library(library_name):
+    try:
+        library = Librarian.objects.get(library=library_name)
+        librarian = library.librarian
+        print(f'Librarian for {library_name}: {librarian.name}')
+    except Library.DoesNotExist:
+        print(f'Library {library_name} does not exist.')
+    except Librarian.DoesNotExist:
+        print(f'No librarian assigned to {library_name}.')
+
+# instances usage
+if __name__ == '__main__':
+    get_books_by_author('Charles Dickens')  
+    get_books_in_library('Kwa-Thema Library') 
+    get_librarian_for_library('Kwa-Thema Library')
