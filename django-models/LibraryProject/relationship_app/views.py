@@ -104,3 +104,7 @@ def delete_book(request, book_id):
         book.delete()
         return redirect('book_list')  # Redirect after deletion
     return render(request, 'relationship_app/delete_book.html', {'book': book})
+
+
+
+# Create your views here.
