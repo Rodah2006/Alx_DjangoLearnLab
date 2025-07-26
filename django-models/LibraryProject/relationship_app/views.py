@@ -3,7 +3,7 @@ from django.views.generic import DetailView
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Book, Library  # ✅ Make sure this is near the top
+from .models import Library,Book  # ✅ Make sure this is near the top
 
 # Function-Based View: List all books and their authors
 def list_books(request):
