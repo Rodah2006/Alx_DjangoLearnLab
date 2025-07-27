@@ -220,3 +220,6 @@ This involves:
 - Configuring the web server (e.g., Nginx) with SSL
 - Enabling Django settings: SECURE_SSL_REDIRECT, CSRF_COOKIE_SECURE, etc.
 
+
+# Use this when behind a proxy like Nginx or Heroku
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
