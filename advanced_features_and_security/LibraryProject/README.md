@@ -13,3 +13,19 @@ class Meta:
         ("can_edit", "Can edit book"),
         ("can_delete", "Can delete book"),
     ]
+
+
+# Security Enhancements
+
+### 1. settings.py
+- `DEBUG = False`: Hides error details in production.
+- `ALLOWED_HOSTS`: Only allows specific hostnames.
+- `CSRF_COOKIE_SECURE`, `SESSION_COOKIE_SECURE`: Enforce secure cookies via HTTPS.
+- `X_FRAME_OPTIONS`, `SECURE_BROWSER_XSS_FILTER`, `SECURE_CONTENT_TYPE_NOSNIFF`: Prevent XSS, clickjacking, and MIME sniffing.
+
+### 2. templates
+- All forms include `{% csrf_token %}` to prevent CSRF attacks.
+
+### 3. views.py
+- Views use Django ORM to prevent SQL injection.
+- All POST methods are CSRF-protected.

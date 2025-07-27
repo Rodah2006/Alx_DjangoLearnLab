@@ -61,3 +61,19 @@ def create_book_view(request):
 @permission_required('bookshelf.can_edit', raise_exception=True)
 def edit_book_view(request, book_id):
     ...
+
+
+
+from django.views.decorators.csrf import csrf_protect
+
+@csrf_protect  # Ensures this view checks for CSRF token
+def submit_review(request):
+    if request.method == 'POST':
+        # Sanitize and validate user input
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+
+        # Avoid raw SQL to prevent SQL injection
+        Review.objects.create(title=title, content=content)
+
+        return redirect('success')

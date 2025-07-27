@@ -1,0 +1,16 @@
+<!-- form_test.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSRF Test Form</title>
+</head>
+<body>
+    <h1>Test Form</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="test">Input:</label>
+        <input type="text" name="test" id="test">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

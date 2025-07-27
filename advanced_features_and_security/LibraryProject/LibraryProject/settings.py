@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bookshelf'
+    'bookshelf',
+    'csp', 
    
  ]
 
@@ -45,12 +46,14 @@ AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'csp.middleware.CSPMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
@@ -124,3 +127,50 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# SECURITY SETTINGS
+
+DEBUG = False  # Make sure this is set only in production
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+# Prevent content sniffing
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable browser XSS filter
+SECURE_BROWSER_XSS_FILTER = True
+
+# Prevent the site from being embedded in iframes (clickjacking protection)
+X_FRAME_OPTIONS = 'DENY'
+
+# CSRF & Session cookies should be secure (sent over HTTPS only)
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+
+CONTENT_SECURITY_POLICY = {
+    'DIRECTIVES': {
+        'default-src': ("'self'",),
+        'font-src': ("'self'", 'fonts.gstatic.com'),
+        'img-src': ("'self'", 'data:'),
+        'script-src': ("'self'",),
+        'style-src': ("'self'", 'fonts.googleapis.com'),
+    }
+}
+
+
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False  # Disables detailed error pages in production
+
+# Restrict allowed hosts
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+# Prevent clickjacking attacks
+X_FRAME_OPTIONS = 'DENY'  # Prevents rendering inside iframes
+
+# Secure session and CSRF cookies
+SESSION_COOKIE_SECURE = True  # Ensures cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = True  # Ensures CSRF token is only sent over HTTPS
+SECURE_BROWSER_XSS_FILTER = True  # Enables XSS filtering in browsers
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevents MIME-sniffing
