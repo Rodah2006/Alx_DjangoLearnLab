@@ -29,3 +29,12 @@ class Meta:
 ### 3. views.py
 - Views use Django ORM to prevent SQL injection.
 - All POST methods are CSRF-protected.
+
+
+## HTTPS Deployment Notes
+
+In production, the application must be served over HTTPS.
+This involves:
+- Setting up SSL/TLS certificates (e.g., via Let’s Encrypt)
+- Configuring the web server (e.g., Nginx) with SSL
+- Enabling Django settings: SECURE_SSL_REDIRECT, CSRF_COOKIE_SECURE, etc.

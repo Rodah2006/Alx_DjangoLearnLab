@@ -174,3 +174,49 @@ SESSION_COOKIE_SECURE = True  # Ensures cookies are only sent over HTTPS
 CSRF_COOKIE_SECURE = True  # Ensures CSRF token is only sent over HTTPS
 SECURE_BROWSER_XSS_FILTER = True  # Enables XSS filtering in browsers
 SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevents MIME-sniffing
+
+
+# ------------------------------
+# SECURITY SETTINGS
+# ------------------------------
+
+# Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True  # 🚨 Important in production!
+
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # One year in seconds
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+
+# Cookies should only be sent via HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Prevent your site from being framed (clickjacking protection)
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent content type sniffing
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable the browser’s XSS filter
+SECURE_BROWSER_XSS_FILTER = True
+
+
+# 🔐 Redirect all HTTP traffic to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# 🔐 Instruct browser to use HTTPS only (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+
+## HTTPS Deployment Notes
+
+In production, the application must be served over HTTPS.
+This involves:
+- Setting up SSL/TLS certificates (e.g., via Let’s Encrypt)
+- Configuring the web server (e.g., Nginx) with SSL
+- Enabling Django settings: SECURE_SSL_REDIRECT, CSRF_COOKIE_SECURE, etc.
+
