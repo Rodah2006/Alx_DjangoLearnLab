@@ -3,5 +3,5 @@ from django.urls import path, include  # ✅ include must be here
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),  # ✅ THIS is what the checker is looking for
+    path('api/', include('api.urls')),  # ✅ exactly like this
 ]
