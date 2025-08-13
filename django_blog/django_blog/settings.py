@@ -76,9 +76,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / "db.sqlite3",
+        'USER': '',  # Not used by SQLite
+        'PASSWORD': '',  # Not used by SQLite
+        'HOST': '',  # Not used by SQLite
+        'PORT': '',  # Not used by SQLite
     }
-}   
-
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
