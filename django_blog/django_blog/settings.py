@@ -74,16 +74,10 @@ WSGI_APPLICATION = 'django_blog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydatabase',
-        'USER': 'myuser',
-        'PASSWORD': 'mypassword',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
     }
-}
-    }
-}
+}   
 
 
 # Password validation
@@ -127,3 +121,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'blog', 'static')]
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Auth redirects
+LOGIN_REDIRECT_URL = "profile"      # after successful login
+LOGOUT_REDIRECT_URL = "login"       # after logout
+
+# Tell Django where to find our auth templates (we already pointed DIRS to blog/templates)
+# Nothing else needed here.
