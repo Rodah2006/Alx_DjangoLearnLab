@@ -126,8 +126,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'blog', 'static')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Auth redirects
-LOGIN_REDIRECT_URL = "profile"      # after successful login
-LOGOUT_REDIRECT_URL = "login"       # after logout
 
-# Tell Django where to find our auth templates (we already pointed DIRS to blog/templates)
-# Nothing else needed here.
+LOGIN_REDIRECT_URL = 'profile'
+LOGOUT_REDIRECT_URL = 'login'
