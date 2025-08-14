@@ -1,5 +1,4 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
 from . import views
 from .views import (
     register,
@@ -11,7 +10,8 @@ from .views import (
     PostDeleteView,
     CommentCreateView,
     CommentUpdateView,
-    CommentDeleteView
+    CommentDeleteView,
+    PostByTagListView,  # add this
 )
 
 urlpatterns = [
@@ -24,23 +24,18 @@ urlpatterns = [
 
     # Authentication URLs
     path('register/', register, name='register'),
-    path('login/', auth_views.LoginView.as_view(template_name='blog/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='blog/logout.html'), name='logout'),
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('logout/', views.LogoutView.as_view(), name='logout'),
     path('profile/', profile, name='profile'),
 
-    # Comment URLs (FBVs)
-    path('post/<int:post_id>/comments/new/', views.add_comment, name='add-comment'),
-    path('comments/<int:comment_id>/edit/', views.edit_comment, name='edit-comment'),
-    path('comments/<int:comment_id>/delete/', views.delete_comment, name='delete-comment'),
+    # Comment URLs
+    path('post/<int:post_id>/comments/new/', CommentCreateView.as_view(), name='comment-create'),
+    path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
+    path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
 
-# Comment URLs (CBVs)
-path('post/<int:pk>/comments/new/', CommentCreateView.as_view(), name='add-comment'),
-path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='edit-comment'),
-path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='delete-comment'),
+    # Tag URLs
+    path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='posts-by-tag'),
 
-# Search functionality
+    # Search URL
     path('search/', views.search_posts, name='search-posts'),
-
-    # Tag filtering (view posts by tag)
-    path('tag/<str:tag_name>/', views.posts_by_tag, name='posts-by-tag'),
 ]
