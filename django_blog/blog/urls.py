@@ -33,8 +33,7 @@ urlpatterns = [
     path('comments/<int:comment_id>/edit/', views.edit_comment, name='edit-comment'),
     path('comments/<int:comment_id>/delete/', views.delete_comment, name='delete-comment'),
 
-    # Comment URLs (CBVs for checker)
-    path('post/<int:post_id>/comments/create/', CommentCreateView.as_view(), name='comment-create'),
-    path('comments/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
-    path('comments/<int:pk>/delete-cbv/', CommentDeleteView.as_view(), name='comment-delete-cbv'),
-]
+# Comment URLs (CBVs)
+path('post/<int:pk>/comments/new/', CommentCreateView.as_view(), name='add-comment'),
+path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='edit-comment'),
+path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='delete-comment'),
