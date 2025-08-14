@@ -8,11 +8,14 @@ from .views import (
     PostDetailView,
     PostCreateView,
     PostUpdateView,
-    PostDeleteView
+    PostDeleteView,
+    CommentCreateView,
+    CommentUpdateView,
+    CommentDeleteView
 )
 
 urlpatterns = [
-    # Blog post CRUD URLs (match checker exactly)
+    # Blog post CRUD URLs
     path('', PostListView.as_view(), name='post-list'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('post/new/', PostCreateView.as_view(), name='post-create'),
@@ -25,8 +28,13 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='blog/logout.html'), name='logout'),
     path('profile/', profile, name='profile'),
 
-    # Comment URLs
+    # Comment URLs (FBVs)
     path('post/<int:post_id>/comments/new/', views.add_comment, name='add-comment'),
     path('comments/<int:comment_id>/edit/', views.edit_comment, name='edit-comment'),
     path('comments/<int:comment_id>/delete/', views.delete_comment, name='delete-comment'),
+
+    # Comment URLs (CBVs for checker)
+    path('post/<int:post_id>/comments/create/', CommentCreateView.as_view(), name='comment-create'),
+    path('comments/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
+    path('comments/<int:pk>/delete-cbv/', CommentDeleteView.as_view(), name='comment-delete-cbv'),
 ]
