@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Comment, Tag  # import Tag if using a Tag model
+from .models import Post, Comment
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 

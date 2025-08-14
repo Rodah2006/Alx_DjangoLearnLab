@@ -1,14 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-# -------------------
-# Tag model
-# -------------------
-class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-
-    def __str__(self):
-        return self.name
+from taggit.managers import TaggableManager  # For tagging
 
 # -------------------
 # Post model
@@ -18,7 +10,7 @@ class Post(models.Model):
     content = models.TextField()
     published_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    tags = models.ManyToManyField(Tag, blank=True, related_name='posts')  # new
+    tags = TaggableManager(blank=True)  # <-- taggit manager
 
     def __str__(self):
         return self.title
@@ -26,6 +18,7 @@ class Post(models.Model):
     def get_absolute_url(self):
         from django.urls import reverse
         return reverse('post-detail', kwargs={'pk': self.pk})
+
 
 # -------------------
 # Comment model

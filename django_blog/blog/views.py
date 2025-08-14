@@ -154,8 +154,7 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 from django.db.models import Q  # for search queries
-from .models import Tag  # assuming you have a Tag model
-
+from taggit.models import Tag
 # -------------------
 # Search posts by keyword
 # -------------------
