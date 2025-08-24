@@ -5,6 +5,11 @@ from rest_framework.views import APIView
 from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer
 from notifications.models import Notification
+from django.http import HttpResponse
+
+# Simple home view
+def home(request):
+    return HttpResponse("Welcome to the Social Media API!")
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
